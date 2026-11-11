@@ -1,9 +1,9 @@
 {
   "name": "commit-pro",
-  "displayName": "CommitPro",
+  "displayName": "Advanced Git Commits Panel",
   "description": "Advanced Git Commits panel, branch selector, right-click commit context actions, 3-Pane Conflict Resolver, Interactive Rebase, and Git Blame for VS Code.",
   "version": "1.0.0",
-  "publisher": "commit-pro",
+  "publisher": "HalilCeyhan",
   "license": "MIT",
   "engines": {
     "vscode": "^1.100.0"
