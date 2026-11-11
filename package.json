@@ -1,0 +1,246 @@
+{
+  "name": "commit-pro",
+  "displayName": "CommitPro",
+  "description": "Advanced Git Commits panel, branch selector, right-click commit context actions, 3-Pane Conflict Resolver, Interactive Rebase, and Git Blame for VS Code.",
+  "version": "1.0.0",
+  "publisher": "commit-pro",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "extensionKind": [
+    "ui",
+    "workspace"
+  ],
+  "categories": [
+    "SCM Providers",
+    "Other"
+  ],
+  "activationEvents": [
+    "workspaceContains:.git"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "panel": [
+        {
+          "id": "commit-pro-panel",
+          "title": "Commits",
+          "icon": "resources/commit-pro.svg"
+        }
+      ]
+    },
+    "views": {
+      "commit-pro-panel": [
+        {
+          "type": "webview",
+          "id": "commitPro.logView",
+          "name": "Commits",
+          "when": "gitOpenRepositoryCount != 0 || commitPro.hasRepository"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "commitPro.refresh",
+        "title": "Refresh Commits & Branches",
+        "category": "CommitPro",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "commitPro.focusLogWindow",
+        "title": "Open Commits Panel (Alt+9)",
+        "category": "CommitPro",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "commitPro.showBranchesPopup",
+        "title": "Branches... (Branch Switcher & Operations)",
+        "category": "CommitPro",
+        "icon": "$(git-branch)"
+      },
+      {
+        "command": "commitPro.updateProject",
+        "title": "Update Project... (Ctrl+T)",
+        "category": "CommitPro",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "commitPro.fetch",
+        "title": "Fetch All Remotes",
+        "category": "CommitPro",
+        "icon": "$(sync)"
+      },
+      {
+        "command": "commitPro.push",
+        "title": "Push... (Ctrl+Shift+K)",
+        "category": "CommitPro",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "commitPro.openThreeWayMerge",
+        "title": "Resolve Conflicts in 3-Pane Merge Editor...",
+        "category": "CommitPro",
+        "icon": "$(git-merge)"
+      },
+      {
+        "command": "commitPro.interactiveRebase",
+        "title": "Interactively Rebase from Here...",
+        "category": "CommitPro",
+        "icon": "$(list-ordered)"
+      },
+      {
+        "command": "commitPro.toggleAnnotateBlame",
+        "title": "Annotate with Git Blame",
+        "category": "CommitPro",
+        "icon": "$(account)"
+      },
+      {
+        "command": "commitPro.showFileHistory",
+        "title": "Show History for Current File (git log --follow)",
+        "category": "CommitPro",
+        "icon": "$(history)"
+      },
+      {
+        "command": "commitPro.showSelectionHistory",
+        "title": "Show History for Selection (git log -L)",
+        "category": "CommitPro",
+        "icon": "$(selection)"
+      },
+      {
+        "command": "commitPro.undoLastCommit",
+        "title": "Undo Last Commit (Soft Reset HEAD~1)",
+        "category": "CommitPro",
+        "icon": "$(history)"
+      },
+      {
+        "command": "commitPro.createWorktree",
+        "title": "New Git Worktree...",
+        "category": "CommitPro",
+        "icon": "$(EmptyWindow)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "commitPro.toggleAnnotateBlame",
+          "group": "1_commitPro@1",
+          "when": "gitOpenRepositoryCount != 0 || commitPro.hasRepository"
+        },
+        {
+          "command": "commitPro.showSelectionHistory",
+          "group": "1_commitPro@2",
+          "when": "editorHasSelection && (gitOpenRepositoryCount != 0 || commitPro.hasRepository)"
+        },
+        {
+          "command": "commitPro.showFileHistory",
+          "group": "1_commitPro@3",
+          "when": "gitOpenRepositoryCount != 0 || commitPro.hasRepository"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "commitPro.showFileHistory",
+          "group": "7_modification@1",
+          "when": "gitOpenRepositoryCount != 0 || commitPro.hasRepository"
+        },
+        {
+          "command": "commitPro.openThreeWayMerge",
+          "group": "7_modification@2",
+          "when": "gitOpenRepositoryCount != 0 || commitPro.hasRepository"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "commitPro.refresh",
+          "when": "view == commitPro.logView",
+          "group": "navigation"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "commitPro.focusLogWindow",
+        "key": "alt+9",
+        "mac": "cmd+9",
+        "when": "gitOpenRepositoryCount != 0 || commitPro.hasRepository"
+      },
+      {
+        "command": "commitPro.updateProject",
+        "key": "ctrl+t",
+        "mac": "cmd+t",
+        "when": "gitOpenRepositoryCount != 0 || commitPro.hasRepository"
+      },
+      {
+        "command": "commitPro.push",
+        "key": "ctrl+shift+k",
+        "mac": "cmd+shift+k",
+        "when": "gitOpenRepositoryCount != 0 || commitPro.hasRepository"
+      }
+    ],
+    "configuration": [
+      {
+        "title": "CommitPro",
+        "properties": {
+          "commitPro.synchronousBranchControl": {
+            "type": "boolean",
+            "default": true,
+            "description": "Execute branch operations (checkout, create, update) synchronously across all registered multi-root repositories."
+          },
+          "commitPro.directoryMappings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [],
+            "description": "Explicitly registered Git repository root paths for Multi-Root VCS Directory Mappings."
+          },
+          "commitPro.protectedBranches": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "main",
+              "master",
+              "release/*"
+            ],
+            "description": "Branches protected from Force Push, Interactive Rebase, Commit Drop, and history rewriting."
+          },
+          "commitPro.autoFetchIntervalMinutes": {
+            "type": "number",
+            "default": 20,
+            "description": "Interval in minutes to silently run 'git fetch' in the background (0 to disable)."
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -p ./",
+    "lint": "eslint",
+    "watch": "tsc -watch -p ./",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "package": "vsce package --no-dependencies --allow-missing-repository"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "@vscode/vsce-sign"
+    ]
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "@types/node": "^26.6.6",
+    "@types/vscode": "1.100.0",
+    "@vitest/coverage-v8": "^5.1.0",
+    "@vscode/vsce": "^4.1.0",
+    "eslint": "^10.14.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.2",
+    "vitest": "^5.1.0"
+  }
+}

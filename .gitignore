@@ -1,0 +1,7 @@
+out/
+node_modules/
+.vscode-test/
+vscode-api/
+vscode-extension-samples/
+*.vsix
+coverage/
